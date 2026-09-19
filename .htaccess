@@ -1,9 +1,20 @@
-Options -Indexes
+# Sin `Options -Indexes`: en hosting compartido (IONOS) la directiva Options no
+# está permitida en .htaccess y provoca un 500 en todo el sitio. IndexIgnore *
+# consigue lo mismo (no listar carpetas) y sí está permitida.
+<IfModule mod_autoindex.c>
+    IndexIgnore *
+</IfModule>
+
 RewriteEngine On
 
 # Apache no pasa la cabecera Authorization a PHP por defecto.
 RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Carpetas internas: 403. Va como RewriteRule RELATIVA a esta carpeta (no como
+# RedirectMatch con la ruta absoluta) para que proteja igual en
+# localhost:81/coupon-gift/ que en la raíz de un dominio.
+RewriteRule ^(app|cli|config|data|database|logs|routes|vendor)(/|$) - [F,L]
 
 # No reescribir ficheros ni directorios reales (css, js, imágenes).
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -14,15 +25,11 @@ RewriteRule ^(.*)$ index.php [QSA,L]
 <FilesMatch "^\.env">
     Require all denied
 </FilesMatch>
-<FilesMatch "\.(sqlite|lock|log|md)$">
+<FilesMatch "\.(sqlite|lock|log|md|json|lock)$">
     Require all denied
 </FilesMatch>
 
-# El bundle de Claude Design no es público.
-<FilesMatch "\.zip$">
+# El bundle de Claude Design y cualquier volcado no son públicos.
+<FilesMatch "\.(zip|sql)$">
     Require all denied
 </FilesMatch>
-
-# Carpetas internas. OJO: el patrón está anclado al nombre de la carpeta del
-# proyecto; si se renombra coupon-gift hay que actualizar esta línea.
-RedirectMatch 403 ^/coupon-gift/(app|cli|config|data|database|logs|routes|vendor)(/|$)

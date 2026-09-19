@@ -17,19 +17,21 @@ declare(strict_types=1);
  * (el .lock, los logs) quedan ilegibles para Apache.
  */
 
+define('BASE_PATH', dirname(__DIR__));
+
+require_once BASE_PATH . '/config/app.php';
+
 if (PHP_SAPI !== 'cli') {
-    // Por HTTP exige el secreto: si no, cualquiera podría dispararlo.
-    $secret = getenv('CRON_SECRET') ?: '';
+    // Por HTTP exige el secreto: si no, cualquiera podría dispararlo. Se
+    // comprueba DESPUÉS de cargar config/app.php, que es quien lee el .env;
+    // con getenv() antes de eso el secreto siempre estaba vacío y daba 403.
+    $secret = (string) env('CRON_SECRET', '');
     $given  = $_GET['token'] ?? $_SERVER['HTTP_X_CRON_TOKEN'] ?? '';
     if ($secret === '' || !hash_equals($secret, (string) $given)) {
         http_response_code(403);
         exit('No autorizado.');
     }
 }
-
-define('BASE_PATH', dirname(__DIR__));
-
-require_once BASE_PATH . '/config/app.php';
 require_once BASE_PATH . '/config/database.php';
 require_once BASE_PATH . '/config/design.php';
 

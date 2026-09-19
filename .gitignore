@@ -17,3 +17,6 @@ Thumbs.db
 *.swo
 *~
 *.tmp
+
+# Volcados con datos reales (hashes, textos personales): nunca al repo
+database/export/

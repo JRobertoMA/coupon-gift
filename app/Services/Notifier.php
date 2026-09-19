@@ -71,7 +71,11 @@ class Notifier
      */
     public static function kickWorker(): void
     {
-        if (!function_exists('exec')) return;
+        // En hosting compartido exec() suele estar en disable_functions:
+        // function_exists() sigue devolviendo true pero llamarla avisa. En
+        // ese caso se deja la cola para el cron.
+        $disabled = array_map('trim', explode(',', (string) ini_get('disable_functions')));
+        if (!function_exists('exec') || in_array('exec', $disabled, true)) return;
 
         $script = escapeshellarg(BASE_PATH . '/cli/worker.php');
         @exec('setsid nohup php ' . $script . ' > /dev/null 2>&1 &');

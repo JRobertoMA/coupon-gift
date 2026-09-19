@@ -32,8 +32,10 @@ function env(string $key, ?string $default = null): ?string
 
 date_default_timezone_set('America/Mexico_City');
 
-// Ruta pública de la app dentro del docroot compartido.
-define('BASE_URL', '/coupon-gift');
+// Ruta pública de la app dentro del docroot. En local es /coupon-gift (docroot
+// compartido con más proyectos); en un hosting donde la app cuelga de la raíz
+// del dominio se pone BASE_URL=/ en el .env, que aquí se convierte en ''.
+define('BASE_URL', rtrim(env('BASE_URL', '/coupon-gift'), '/'));
 
 // URL absoluta: la que se mete en los QR y en los correos. Tiene que ser
 // alcanzable desde el móvil, por eso vive en .env y no se deduce de $_SERVER.
