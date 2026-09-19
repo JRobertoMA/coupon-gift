@@ -1,0 +1,165 @@
+/* ============================================================================
+   Panel de personalización de la vista de impresión.
+   Lleva .no-print, así que nada de esto llega al papel.
+   ========================================================================= */
+
+/* Usada por el panel para quitar y poner la portada o las etiquetas de tono sin
+   recargar. Vive aquí porque es interfaz, no diseño del documento. */
+.is-hidden {
+    display: none !important;
+}
+
+.print-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 18px;
+    padding: 12px 18px;
+    margin-bottom: 24px;
+    background: #2f2822;
+    border-bottom: 1px solid #5a4c3e;
+    color: #efe4d4;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+}
+
+.pt-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.pt-group > label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #a2937f;
+}
+
+.pt-title {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    margin-right: auto;
+}
+
+.pt-back {
+    color: #efe4d4;
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 1;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #453a30;
+}
+
+.pt-back:hover {
+    background: #5a4c3e;
+}
+
+.print-toolbar select {
+    background: #453a30;
+    color: #efe4d4;
+    border: 1px solid #5a4c3e;
+    border-radius: 4px;
+    padding: 6px 9px;
+    font-size: 13px;
+    min-width: 190px;
+}
+
+/* ── Paletas ─────────────────────────────────────────────────────────────── */
+.pt-palettes {
+    display: flex;
+    gap: 6px;
+}
+
+.pt-swatch {
+    display: flex;
+    width: 46px;
+    height: 26px;
+    padding: 0;
+    overflow: hidden;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    background: none;
+}
+
+.pt-swatch span {
+    flex: 1;
+}
+
+.pt-swatch:hover {
+    border-color: #7d6b5a;
+}
+
+.pt-swatch.is-active {
+    border-color: #efe4d4;
+}
+
+/* ── Casillas ────────────────────────────────────────────────────────────── */
+.pt-checks {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+}
+
+.pt-checks label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 13px;
+    color: #efe4d4;
+}
+
+/* ── Acciones ────────────────────────────────────────────────────────────── */
+.pt-actions {
+    flex-direction: row;
+    gap: 8px;
+}
+
+.pt-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background: #B4543A;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.pt-btn:hover {
+    background: #c9634a;
+}
+
+.pt-btn--ghost {
+    background: #453a30;
+}
+
+.pt-btn--ghost:hover {
+    background: #5a4c3e;
+}
+
+.pt-hint {
+    flex-basis: 100%;
+    margin: 4px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #a2937f;
+}
+
+.pt-hint code {
+    background: #453a30;
+    padding: 1px 5px;
+    border-radius: 3px;
+}

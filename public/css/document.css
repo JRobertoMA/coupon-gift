@@ -1,0 +1,540 @@
+/* ============================================================================
+   El diseño «Cupones de Pareja - Hechos a Mano».
+   Traducción 1:1 de los estilos en línea del prototipo de Claude Design.
+   Todas las medidas son literales: están calculadas para llenar una hoja Carta
+   y no se redondean. Los colores y tipografías vienen de las variables que
+   calcula config/design.php sobre el <div> raíz.
+   ========================================================================= */
+
+/* ── Cinta adhesiva ──────────────────────────────────────────────────────── */
+.tape {
+    position: absolute;
+    background: var(--tape, rgba(180, 84, 58, 0.28));
+}
+
+/* ── Portada ─────────────────────────────────────────────────────────────── */
+.page--cover {
+    padding: 0.55in;
+    display: flex;
+    flex-direction: column;
+}
+
+.cover-card {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.26in;
+    border: 1.5px dashed var(--line, #A9917A);
+    border-radius: 3px;
+    padding: 0.6in 0.55in;
+    background: var(--card, #F6EBD8);
+}
+
+.cover-card .tape--a {
+    top: -16px;
+    left: 1.1in;
+    width: 1.5in;
+    height: 0.38in;
+    border-left: 1px solid rgba(255, 255, 255, 0.35);
+    border-right: 1px solid rgba(255, 255, 255, 0.35);
+    transform: rotate(-2.5deg);
+}
+
+.cover-card .tape--b {
+    top: -14px;
+    right: 0.9in;
+    width: 1.2in;
+    height: 0.34in;
+    transform: rotate(3deg);
+}
+
+.cover-eyebrow {
+    font-family: var(--mono, 'Courier Prime'), monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.cover-title {
+    margin: 0;
+    font-family: var(--hand, 'Caveat'), cursive;
+    font-weight: 700;
+    font-size: 110px;
+    line-height: 0.82;
+    color: var(--ink, #3B3027);
+    text-wrap: balance;
+}
+
+.cover-title .accent {
+    color: var(--acc, #B4543A);
+}
+
+.cover-rule {
+    height: 3px;
+    width: 3.2in;
+    background: var(--acc, #B4543A);
+    border-radius: 3px;
+    transform: rotate(-0.6deg);
+}
+
+.cover-note {
+    margin: 0;
+    max-width: 5.3in;
+    font-family: var(--mono, 'Courier Prime'), monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    text-wrap: pretty;
+}
+
+.cover-fields {
+    display: flex;
+    gap: 0.5in;
+    margin-top: 0.18in;
+    flex-wrap: wrap;
+}
+
+.field-label {
+    font-family: var(--mono, 'Courier Prime'), monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.field-value {
+    font-family: var(--hand, 'Caveat'), cursive;
+    font-size: 44px;
+    line-height: 1.1;
+    border-bottom: 1.5px solid var(--line, #A9917A);
+    min-width: 2in;
+}
+
+/* ── Hoja de cupones ─────────────────────────────────────────────────────── */
+.page--coupons {
+    padding: 0.42in 0.45in;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.18in;
+}
+
+.sheet-head {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono, 'Courier Prime'), monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* ── El ticket ───────────────────────────────────────────────────────────── */
+/* 299px exactos: 3 tickets + 3 gaps de 0.18in + 0.84in de padding + cabecera
+   suman 1045.5px de los 1056px de una hoja Carta. Cambiar esta altura
+   descuadra la hoja y el tercer cupón se recorta. */
+.ticket {
+    position: relative;
+    flex: none;
+    box-sizing: border-box;
+    height: 299px;
+    display: flex;
+    overflow: hidden;
+    background: var(--card, #F6EBD8);
+    border: var(--tk-bw, 1.5px) var(--tk-bs, dashed) var(--line, #A9917A);
+    border-radius: var(--tk-r, 3px);
+}
+
+/* La cinta asoma por encima del borde y el overflow:hidden del ticket la
+   recorta: así se ve solo la mitad pegada, como en el diseño. */
+.ticket .tape--t {
+    top: -13px;
+    left: 1.6in;
+    width: 1.15in;
+    height: 0.3in;
+    transform: rotate(-2deg);
+}
+
+.ticket-stub {
+    width: 1.15in;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border-right: var(--tk-bw, 1.5px) var(--tk-bs, dashed) var(--line, #A9917A);
+    background: var(--stub, rgba(180, 84, 58, 0.08));
+}
+
+.ticket-number {
+    font-family: var(--hand, 'Caveat'), cursive;
+    font-weight: 700;
+    font-size: 66px;
+    line-height: 0.8;
+    color: var(--acc, #B4543A);
+}
+
+.ticket-of {
+    font-family: var(--mono, 'Courier Prime'), monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.ticket-body {
+    flex: 1;
+    min-width: 0;
+    padding: 0.2in 0.28in;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 9px;
+}
+
+.ticket-meta {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--mono, 'Courier Prime'), monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.ticket-tag {
+    padding: 3px 9px;
+    border: 1.2px solid var(--line, #A9917A);
+    border-radius: 2px;
+}
+
+.ticket-title {
+    font-family: var(--hand, 'Caveat'), cursive;
+    font-weight: 700;
+    font-size: var(--tk-title, 50px);
+    line-height: 0.94;
+    text-wrap: balance;
+}
+
+.ticket-rule {
+    height: 2.5px;
+    width: 1.5in;
+    background: var(--acc, #B4543A);
+    border-radius: 3px;
+    transform: rotate(-0.7deg);
+}
+
+.ticket-desc {
+    font-family: var(--mono, 'Courier Prime'), monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 4.2in;
+    text-wrap: pretty;
+}
+
+/* ── Lateral derecho ─────────────────────────────────────────────────────── */
+.ticket-side {
+    width: 0.85in;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border-left: var(--tk-bw, 1.5px) var(--tk-bs, dashed) var(--line, #A9917A);
+}
+
+/* Sello «vale ya» del diseño original. Se usa cuando la cuponera NO lleva QR. */
+.ticket-seal {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 1.5px dashed var(--acc, #B4543A);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: var(--hand, 'Caveat'), cursive;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 0.95;
+    color: var(--acc, #B4543A);
+    transform: rotate(-7deg);
+}
+
+/* Única desviación deliberada del diseño: con use_qr el lateral lleva el QR y
+   el código legible en lugar del sello. El código permite canjear a mano si el
+   QR no escanea. Cabe de sobra: 58 + 9 + ~12 + 9 + ~110 < 299px. */
+.ticket-qr {
+    line-height: 0;
+    color: var(--ink, #3B3027);
+    background: #fff;
+    padding: 3px;
+    border-radius: 2px;
+}
+
+.ticket-qr svg {
+    display: block;
+}
+
+.ticket-code {
+    font-family: var(--mono, 'Courier Prime'), monospace;
+    font-size: 8px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.ticket-vertical {
+    font-family: var(--mono, 'Courier Prime'), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+}
+
+/* ── Cupón ya cumplido ───────────────────────────────────────────────────── */
+/* Se imprime igual pero sellado, para que al reimprimir la cuponera se vea de
+   un vistazo lo que ya se gastó. */
+.ticket--spent .ticket-body,
+.ticket--spent .ticket-stub,
+.ticket--spent .ticket-side {
+    opacity: 0.45;
+}
+
+.ticket--spent::after {
+    content: attr(data-stamp);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-11deg);
+    font-family: var(--mono, 'Courier Prime'), monospace;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--acc, #B4543A);
+    border: 3px solid var(--acc, #B4543A);
+    border-radius: 6px;
+    padding: 6px 18px;
+    opacity: 0.72;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* ============================================================================
+   Rejilla de dos columnas (mediano y pequeño).
+   El grande no la usa: sus tres tickets van apilados directamente en .page.
+   ========================================================================= */
+.ticket-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-content: start;
+}
+
+/* ============================================================================
+   MEDIANO — 12,6 × 6 cm, hoja Carta APAISADA (1056 × 816 px), 2 × 3 = 6.
+
+   padding .page 0.35in/0.4in     → usable 979.2 × 748.8
+   cabecera 16 + gap 12           → 720.8 para tickets
+   2 col, gap 0.25in (24)         → 477.6 px de ancho = 12.6 cm
+   3 filas, gap 0.2in (19.2)      → 3×226 + 2×19.2 = 716.4 ≤ 720.8 ✓ (4.4 px)
+   Cambiar los 226 px descuadra la hoja: no hay reflujo, se recorta.
+   ========================================================================= */
+.page--coupons-medium {
+    padding: 0.35in 0.4in;
+    gap: 12px;
+}
+
+.page--coupons-medium .ticket-grid {
+    column-gap: 0.25in;
+    row-gap: 0.2in;
+}
+
+.ticket--md {
+    height: 226px;
+}
+
+.ticket--md .tape--t {
+    top: -10px;
+    left: 1.1in;
+    width: 0.85in;
+    height: 0.22in;
+}
+
+.ticket--md .ticket-stub {
+    width: 0.8in;
+    gap: 3px;
+}
+
+.ticket--md .ticket-number {
+    font-size: 44px;
+}
+
+.ticket--md .ticket-of {
+    font-size: 9px;
+}
+
+.ticket--md .ticket-body {
+    padding: 0.14in 0.2in;
+    gap: 6px;
+}
+
+.ticket--md .ticket-meta {
+    font-size: 9px;
+    gap: 7px;
+}
+
+.ticket--md .ticket-tag {
+    padding: 2px 7px;
+}
+
+/* El título escala con la tipografía elegida: Caveat 50→30, Patrick 40→24. */
+.ticket--md .ticket-title {
+    font-size: calc(var(--tk-title, 50px) * 0.6);
+}
+
+.ticket--md .ticket-rule {
+    height: 2px;
+    width: 1.1in;
+}
+
+.ticket--md .ticket-desc {
+    font-size: 10px;
+    line-height: 1.45;
+    max-width: none;
+}
+
+.ticket--md .ticket-side {
+    width: 0.65in;
+    gap: 6px;
+}
+
+.ticket--md .ticket-qr {
+    padding: 2px;
+}
+
+.ticket--md .ticket-code {
+    font-size: 7px;
+    letter-spacing: 0.02em;
+}
+
+.ticket--md .ticket-seal {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+}
+
+.ticket--md .ticket-vertical {
+    font-size: 8px;
+    letter-spacing: 0.1em;
+}
+
+.ticket--md.ticket--spent::after {
+    font-size: 20px;
+    border-width: 2px;
+    padding: 4px 12px;
+}
+
+/* ============================================================================
+   PEQUEÑO — 9,8 × 4,7 cm, hoja Carta vertical (816 × 1056 px), 2 × 5 = 10.
+   Diseño de tarjeta: dos zonas, el QR baja al talón bajo el número.
+
+   padding .page 0.35in/0.3in     → usable 758.4 × 988.8
+   cabecera 16 + gap 12           → 960.8 para tickets
+   2 col, gap 0.2in (19.2)        → 369.6 px de ancho = 9.8 cm
+   5 filas, gap 0.18in (17.3)     → 5×178 + 4×17.3 = 959.2 ≤ 960.8 ✓ (1.6 px)
+   ========================================================================= */
+.page--coupons-small {
+    padding: 0.35in 0.3in;
+    gap: 12px;
+}
+
+.page--coupons-small .ticket-grid {
+    column-gap: 0.2in;
+    row-gap: 0.18in;
+}
+
+.ticket--sm {
+    height: 178px;
+}
+
+.ticket--sm .tape--t {
+    top: -8px;
+    left: 0.9in;
+    width: 0.7in;
+    height: 0.18in;
+}
+
+/* El talón aloja número + QR: por eso es más ancho que el del mediano. */
+.ticket--sm .ticket-stub {
+    width: 0.95in;
+    gap: 5px;
+}
+
+.ticket--sm .ticket-number {
+    font-size: 26px;
+    display: flex;
+    align-items: baseline;
+    gap: 1px;
+}
+
+.ticket--sm .ticket-of {
+    font-size: 8px;
+    letter-spacing: 0.04em;
+    color: var(--ink, #3B3027);
+}
+
+.ticket--sm .ticket-qr {
+    padding: 2px;
+}
+
+.ticket--sm .ticket-code {
+    font-size: 6.5px;
+    letter-spacing: 0.02em;
+}
+
+.ticket--sm .ticket-seal {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+}
+
+.ticket--sm .ticket-body {
+    padding: 0.1in 0.16in;
+    gap: 4px;
+}
+
+.ticket--sm .ticket-meta {
+    font-size: 8px;
+    letter-spacing: 0.12em;
+}
+
+.ticket--sm .ticket-title {
+    font-size: calc(var(--tk-title, 50px) * 0.5);
+    line-height: 0.92;
+}
+
+.ticket--sm .ticket-rule {
+    height: 2px;
+    width: 0.8in;
+}
+
+/* Tres líneas como mucho: las 20 descripciones por defecto caben (la más larga
+   son 82 caracteres, ~40 por línea). Una escrita muy larga se corta con «…»,
+   que es preferible a que desborde el ticket. */
+.ticket--sm .ticket-desc {
+    font-size: 9px;
+    line-height: 1.4;
+    max-width: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.ticket--sm.ticket--spent::after {
+    font-size: 14px;
+    border-width: 2px;
+    padding: 3px 9px;
+    letter-spacing: 0.14em;
+}

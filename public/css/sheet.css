@@ -1,0 +1,118 @@
+/* ============================================================================
+   Geometría de la hoja.
+   Sustituye a <doc-page> del prototipo, que no se implementa: solo se recrea
+   su salida. Paginación explícita, una <section class="page"> por hoja.
+   ========================================================================= */
+
+:root {
+    --sheet-w: 8.5in;   /* Carta */
+    --sheet-h: 11in;
+    --desk:    #4a4037;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body.doc {
+    background: var(--desk);
+    padding: 28px 16px 60px;
+    /* Fondo de escritorio, como el prototipo en pantalla. */
+}
+
+.sheets {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+
+/* Cada hoja es una caja física fija con desbordamiento oculto: lo que no cabe
+   se RECORTA, no fluye a la siguiente. Por eso el diseño está calculado para
+   llenar la hoja exactamente. */
+.sheet {
+    width: var(--sheet-w);
+    height: var(--sheet-h);
+    overflow: hidden;
+    position: relative;
+    background: var(--pg, #E8D8BF);
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.38);
+    flex: none;
+}
+
+/* Apaisado (tamaño mediano): la clase la pone el layout en <body>, y la regla
+   @page correspondiente la emite en línea porque @page no admite selectores. */
+.sheet--landscape .sheet {
+    width: var(--sheet-h);
+    height: var(--sheet-w);
+}
+
+/* La hoja es un contenedor de tamaño: nada aquí dentro se mide en unidades de
+   viewport, que siguen a la ventana y no al papel. */
+.page {
+    width: 100%;
+    height: 100%;
+    background: var(--pg, #E8D8BF);
+    background-image: var(--tex, none);
+    background-size: var(--tex-size, auto);
+    color: var(--ink, #3B3027);
+}
+
+/* Si la hoja no cabe en la ventana se escala en bloque, sin tocar la maqueta
+   interior (que es lo que se imprime). --fit lo calcula controls.js según el
+   ancho real de la hoja (816 px vertical, 1056 px apaisada); vale 1 cuando
+   cabe entera. */
+@media screen {
+    .sheets {
+        transform: scale(var(--fit, 1));
+        transform-origin: top center;
+        /* Se compensa el hueco que deja el escalado. */
+        margin-bottom: calc((var(--fit, 1) - 1) * 100%);
+    }
+}
+
+/* ── Impresión ───────────────────────────────────────────────────────────── */
+/* La regla @page NO está aquí: la emite layouts/print.php en línea, porque la
+   orientación depende del tamaño de cupón y @page no admite selectores.
+   Siempre lleva margin: 0 a propósito: el diseño va a sangre, el color de
+   fondo y la textura llegan al borde del papel. El margen visual ya está
+   dentro de la hoja, en el padding de .page. Con margen de página Chrome
+   además dibuja su cabecera con fecha y URL. */
+
+@media print {
+    body.doc {
+        background: none;
+        padding: 0;
+    }
+
+    .sheets {
+        gap: 0;
+        display: block;
+        transform: none;
+        margin: 0;
+    }
+
+    .sheet {
+        box-shadow: none;
+        margin: 0;
+        /* Obligatorio: TODO el diseño son fondos y texturas. Sin esto Chrome
+           imprime las hojas en blanco. Aun así el usuario puede necesitar
+           marcar «Gráficos de fondo» en el diálogo de impresión. */
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    /* Una hoja por página. El salto lo pone la hoja, nunca el contenido. */
+    .sheet:not(:last-child) {
+        break-after: page;
+    }
+
+    /* Nada de la interfaz llega al papel. */
+    .no-print,
+    .print-toolbar {
+        display: none !important;
+    }
+}
