@@ -32,6 +32,10 @@ function env(string $key, ?string $default = null): ?string
 
 date_default_timezone_set('America/Mexico_City');
 
+// Con APP_DEBUG=1 los errores se muestran en pantalla. Solo para diagnosticar;
+// en producción va a 0 y el error real queda en logs/app.log.
+define('APP_DEBUG', env('APP_DEBUG', '0') === '1');
+
 // Ruta pública de la app dentro del docroot. En local es /coupon-gift (docroot
 // compartido con más proyectos); en un hosting donde la app cuelga de la raíz
 // del dominio se pone BASE_URL=/ en el .env, que aquí se convierte en ''.

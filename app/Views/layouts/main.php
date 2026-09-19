@@ -34,6 +34,7 @@ unset($_SESSION['message']);
                 <span class="text-secondary small d-none d-sm-inline">
                     <?= htmlspecialchars($_authUser['name']) ?>
                 </span>
+                <a class="btn btn-sm btn-outline-secondary" href="<?= BASE_URL ?>/ajustes">Ajustes</a>
                 <a class="btn btn-sm btn-outline-secondary" href="<?= BASE_URL ?>/salir">Salir</a>
             </div>
         <?php endif; ?>

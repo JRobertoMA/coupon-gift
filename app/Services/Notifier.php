@@ -77,7 +77,12 @@ class Notifier
         $disabled = array_map('trim', explode(',', (string) ini_get('disable_functions')));
         if (!function_exists('exec') || in_array('exec', $disabled, true)) return;
 
+        // Se usa el MISMO binario que sirve la web (PHP_BINARY), no `php` a
+        // secas: en IONOS `php` es una versión antigua que ni parsea el código.
+        // Bajo FastCGI PHP_BINARY es php-cgi, que también ejecuta ficheros.
+        // Es solo un empujón: si no arranca, el cron recoge la cola igual.
+        $php    = PHP_BINARY !== '' ? escapeshellarg(PHP_BINARY) : 'php';
         $script = escapeshellarg(BASE_PATH . '/cli/worker.php');
-        @exec('setsid nohup php ' . $script . ' > /dev/null 2>&1 &');
+        @exec('setsid nohup ' . $php . ' ' . $script . ' > /dev/null 2>&1 &');
     }
 }

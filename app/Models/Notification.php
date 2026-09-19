@@ -37,6 +37,24 @@ class Notification extends Model
         );
     }
 
+    /** Últimos avisos que afectan al usuario (los que recibe y los de sus cuponeras). */
+    public function recentForUser(int $userId, int $limit = 20): array
+    {
+        $limit = max(1, min(100, $limit));
+        return $this->query(
+            "SELECT n.id, n.channel, n.status, n.attempts, n.last_error, n.sent_at, n.created_at,
+                    c.title AS coupon_title, c.code AS coupon_code, u.name AS to_name
+               FROM notifications n
+               JOIN coupons c      ON c.id = n.coupon_id
+               JOIN coupon_books b ON b.id = c.book_id
+               JOIN users u        ON u.id = n.to_user_id
+              WHERE n.to_user_id = ? OR b.owner_id = ? OR b.recipient_id = ?
+              ORDER BY n.id DESC
+              LIMIT $limit",
+            [$userId, $userId, $userId]
+        );
+    }
+
     public function markSent(int $id): void
     {
         $this->execute(

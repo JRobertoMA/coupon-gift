@@ -7,25 +7,31 @@
 
 RewriteEngine On
 
+# Base dinámica. Cuando el dominio apunta a una subcarpeta del webspace (IONOS),
+# la reescritura relativa a index.php falla con 500 si no hay RewriteBase; pero
+# un RewriteBase fijo rompería el otro entorno (/ en el hosting, /coupon-gift en
+# local). Esto calcula la base a partir de la petición y sirve en los dos.
+RewriteCond %{REQUEST_URI}::$1 ^(.*?/)(.*)::\2$
+RewriteRule ^(.*)$ - [E=BASE:%1]
+
 # Apache no pasa la cabecera Authorization a PHP por defecto.
 RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-# Carpetas internas: 403. Va como RewriteRule RELATIVA a esta carpeta (no como
-# RedirectMatch con la ruta absoluta) para que proteja igual en
+# Carpetas internas: 403. Relativa a esta carpeta, así protege igual en
 # localhost:81/coupon-gift/ que en la raíz de un dominio.
 RewriteRule ^(app|cli|config|data|database|logs|routes|vendor)(/|$) - [F,L]
 
 # No reescribir ficheros ni directorios reales (css, js, imágenes).
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteRule ^(.*)$ %{ENV:BASE}index.php [QSA,L]
 
 # Nunca servir configuración ni secretos.
 <FilesMatch "^\.env">
     Require all denied
 </FilesMatch>
-<FilesMatch "\.(sqlite|lock|log|md|json|lock)$">
+<FilesMatch "\.(sqlite|lock|log|md|json)$">
     Require all denied
 </FilesMatch>
 

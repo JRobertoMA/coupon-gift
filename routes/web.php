@@ -21,6 +21,10 @@ $router->get('/salir',   'AuthController', 'logout');
 // ── Inicio ───────────────────────────────────────────────────────────────────
 $router->get('/', 'BookController', 'index');
 
+// ── Ajustes de la cuenta ─────────────────────────────────────────────────────
+$router->get('/ajustes',  'SettingsController', 'show');
+$router->post('/ajustes', 'SettingsController', 'update');
+
 // ── Cuponeras ────────────────────────────────────────────────────────────────
 $router->get('/cuponeras',        'BookController', 'index');
 $router->get('/cuponeras/nueva',  'BookController', 'create');
@@ -46,6 +50,10 @@ $router->post('/cupon/(CP-[A-Z0-9]{4,20})', 'RedeemController', 'transition');
 
 // Confirmación desde el correo: enlace firmado de un solo uso.
 $router->get('/confirmar/([a-f0-9]{64})', 'RedeemController', 'confirmByToken');
+
+// ── Cron por URL ─────────────────────────────────────────────────────────────
+// Protegido por CRON_SECRET (?token= o cabecera X-Cron-Token), no por sesión.
+$router->get('/cron/worker', 'WorkerController', 'run');
 
 // ── Telegram ─────────────────────────────────────────────────────────────────
 // Protegido por la cabecera X-Telegram-Bot-Api-Secret-Token, no por sesión.
