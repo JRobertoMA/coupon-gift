@@ -183,8 +183,8 @@ switch ($command) {
           user.php email correo@actual.com correo@nuevo.com
           user.php telegram correo@ejemplo.com <chat_id>
 
-        Para averiguar tu chat_id: escribe al bot y abre
-        https://api.telegram.org/bot<TOKEN>/getUpdates
+        Lo normal es vincular Telegram desde la web (Ajustes → Vincular Telegram). «telegram» es la vía de rescate:
+        el chat_id es tu id de Telegram (el del chat privado con el bot); vacío desvincula.
 
         TXT;
         break;

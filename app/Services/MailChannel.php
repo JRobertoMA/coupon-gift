@@ -49,10 +49,15 @@ class MailChannel
         $mail->CharSet    = 'UTF-8';
         $mail->Timeout    = 20;
 
+        // El puerto manda sobre MAIL_ENCRYPTION: 465 es SSL implícito (la
+        // conexión nace cifrada) y 587 es STARTTLS (nace en claro y se cifra
+        // después). Poner «tls» con el 465 hace que ni se abra la conexión
+        // («Could not connect to SMTP host»), y es un error facilísimo de
+        // cometer, así que aquí se corrige solo.
         $encryption = strtolower((string) env('MAIL_ENCRYPTION', 'tls'));
-        if ($encryption === 'ssl') {
+        if ($mail->Port === 465 || $encryption === 'ssl' || $encryption === 'smtps') {
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        } elseif ($encryption === 'tls') {
+        } elseif ($encryption === 'tls' || $encryption === 'starttls') {
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         } else {
             $mail->SMTPSecure  = '';

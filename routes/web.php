@@ -24,6 +24,7 @@ $router->get('/', 'BookController', 'index');
 // ── Ajustes de la cuenta ─────────────────────────────────────────────────────
 $router->get('/ajustes',  'SettingsController', 'show');
 $router->post('/ajustes', 'SettingsController', 'update');
+$router->post('/ajustes/telegram/desvincular', 'SettingsController', 'unlinkTelegram');
 
 // ── Cuponeras ────────────────────────────────────────────────────────────────
 $router->get('/cuponeras',        'BookController', 'index');
@@ -56,5 +57,6 @@ $router->get('/confirmar/([a-f0-9]{64})', 'RedeemController', 'confirmByToken');
 $router->get('/cron/worker', 'WorkerController', 'run');
 
 // ── Telegram ─────────────────────────────────────────────────────────────────
-// Protegido por la cabecera X-Telegram-Bot-Api-Secret-Token, no por sesión.
-$router->post('/telegram/webhook', 'TelegramWebhookController', 'handle');
+// Eventos que reenvía el backend compartido del bot (botones y /vincular). Protegido por la firma HMAC
+// (BotSignature, BOT_PROJECT_KEY), no por sesión.
+$router->post('/telegram/bot', 'TelegramBotController', 'handle');

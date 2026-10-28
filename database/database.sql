@@ -13,12 +13,24 @@ CREATE TABLE IF NOT EXISTS users (
     name             VARCHAR(80)   NOT NULL,
     email            VARCHAR(190)  NOT NULL,
     password_hash    VARCHAR(255)  NOT NULL,
-    -- Chat id de Telegram para las notificaciones. NULL = solo recibe correo.
+    -- Cuenta de Telegram vinculada (from.id, que en el chat privado con el bot es también el chat id).
+    -- Se rellena con /vincular CG-… (TelegramLink). NULL = solo recibe correo.
     telegram_chat_id VARCHAR(32)   DEFAULT NULL,
     created_at       DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at       DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    UNIQUE KEY uq_users_email (email)
+    UNIQUE KEY uq_users_email (email),
+    UNIQUE KEY uq_users_telegram (telegram_chat_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Códigos para vincular Telegram (/vincular CG-XXXXXXXX): un solo uso, 10 min, solo el sha256; uno por usuario
+CREATE TABLE IF NOT EXISTS telegram_link_codes (
+    code_hash  CHAR(64)     NOT NULL,
+    user_id    INT UNSIGNED NOT NULL,
+    expires_at INT UNSIGNED NOT NULL,
+    PRIMARY KEY (code_hash),
+    UNIQUE KEY uq_tgcodes_user (user_id),
+    CONSTRAINT fk_tgcodes_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ── Cuponeras ────────────────────────────────────────────────────────────────
